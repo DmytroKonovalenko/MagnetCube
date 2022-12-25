@@ -13,12 +13,14 @@ public class Player : MonoBehaviour
 
     private bool IsPointerDown;
     private Vector3 cubePosition;
+    private bool canMove;
 
 
     // Start is called before the first frame update
     void Start()
     {
         SpawnCube();
+        canMove = true;
 
         touchSlider.OnPointerDownAction += OnPointerDown; 
         touchSlider.OnPointerDragAction += OnPointerDrag; 
@@ -44,9 +46,10 @@ public class Player : MonoBehaviour
     }
     private void OnPointerUp()
     {
-        if(IsPointerDown)
+        if(IsPointerDown&&canMove)
         {
             IsPointerDown = false;
+            canMove = false;
             mainCube.cubeRb.AddForce(Vector3.forward * pushPower, ForceMode.Impulse);
 
             Invoke("SpawnNewCube",0.3f);
@@ -56,6 +59,7 @@ public class Player : MonoBehaviour
     private void SpawnNewCube()
     {
         mainCube.isMainCube = false;
+        canMove = true;
         SpawnCube();
     }
 
